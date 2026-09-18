@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ organization.name }} — WebEmail</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <a href="{% url 'organization_list' %}">
+        ← Tashkilotlar
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div class="welcome">
+
+        <h1>{{ organization.name }}</h1>
+
+        <p>
+            INN: {{ organization.inn }}
+        </p>
+
+        {% if organization.description %}
+            <p>{{ organization.description }}</p>
+        {% endif %}
+
+    </div>
+
+
+    <div class="welcome">
+
+        <h2>Bo'limlar</h2>
+
+        <a href="{% url 'department_create' organization.id %}">
+            + Bo'lim yaratish
+        </a>
+
+    </div>
+
+
+    <div class="cards">
+
+        {% for department in departments %}
+
+            <a
+                href="{% url 'department_detail' department.id %}"
+                class="card card-link"
+            >
+
+                <h3>{{ department.name }}</h3>
+
+                <p style="font-size: 18px;">
+                    Xodimlar:
+                    {{ department.users.count }}
+                </p>
+
+            </a>
+
+        {% empty %}
+
+            <div class="card empty-state">
+                <h3>Hozircha bo'limlar yo'q</h3>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tashkilot yaratish — WebEmail</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <a href="{% url 'organization_list' %}">
+        ← Orqaga
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div class="form-container">
+
+        <h1>Tashkilot yaratish</h1>
+
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Tashkilot nomi</label>
+                <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Tashkilot nomini kiriting"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>INN</label>
+                <input
+                    type="text"
+                    name="inn"
+                    required
+                    placeholder="INN raqamini kiriting (9 xona)"
+                    maxlength="9"
+                    pattern="[0-9]{9}"
+                    title="INN 9 xonali raqamdan iborat bo'lishi kerak"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Tavsif</label>
+                <textarea
+                    name="description"
+                    placeholder="Tashkilot haqida qisqacha ma'lumot"
+                ></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Tashkilot yaratish
+                </button>
+
+                <a href="{% url 'organization_list' %}" class="btn btn-secondary">
+                    Bekor qilish
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

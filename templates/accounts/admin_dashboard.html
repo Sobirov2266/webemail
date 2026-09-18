@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebEmail — Admin Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <div>
+        <span>
+            {{ request.user.first_name }} {{ request.user.last_name }}
+        </span>
+
+        &nbsp;&nbsp;
+
+        <a href="{% url 'admin_logout' %}">
+            Chiqish
+        </a>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Administrator Dashboard</h1>
+
+        <p>
+            WebEmail tizimini boshqarish paneli
+        </p>
+    </div>
+
+
+    <div class="cards">
+
+    <a href="{% url 'organization_list' %}" class="card card-link">
+        <h3>Tashkilotlar</h3>
+        <p>{{ organization_count }}</p>
+    </a>
+
+    <div class="card">
+        <h3>Bo'limlar</h3>
+        <p>{{ department_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Xodimlar</h3>
+        <p>{{ user_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>ERI kalitlari</h3>
+        <p>{{ digital_key_count }}</p>
+    </div>
+
+</div>
+
+</main>
+
+</body>
+</html>

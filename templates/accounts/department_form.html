@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bo'lim yaratish — WebEmail</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <a href="{% url 'organization_detail' organization.id %}">
+        ← Orqaga
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div class="form-container">
+
+        <h1>Bo'lim yaratish</h1>
+
+        <p>
+            Tashkilot:
+            <strong>{{ organization.name }}</strong>
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Bo'lim nomi</label>
+                <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Bo'lim nomini kiriting"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Tavsif</label>
+                <textarea
+                    name="description"
+                    placeholder="Bo'lim haqida qisqacha ma'lumot"
+                ></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Saqlash
+                </button>
+
+                <a href="{% url 'organization_detail' organization.id %}" class="btn btn-secondary">
+                    Bekor qilish
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

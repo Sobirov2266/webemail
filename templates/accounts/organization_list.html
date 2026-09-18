@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebEmail — Tashkilotlar</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <a href="{% url 'admin_dashboard' %}">
+        Dashboard
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Tashkilotlar</h1>
+
+        <a href="{% url 'organization_create' %}">
+            + Tashkilot yaratish
+        </a>
+    </div>
+
+    <div class="cards">
+
+        {% for organization in organizations %}
+
+            <a
+                href="{% url 'organization_detail' organization.id %}"
+                class="card card-link"
+            >
+                <h3>{{ organization.name }}</h3>
+
+                <p style="font-size: 18px;">
+                    INN: {{ organization.inn }}
+                </p>
+            </a>
+
+        {% empty %}
+
+            <div class="card empty-state">
+                <h3>Tashkilotlar mavjud emas</h3>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+</html>

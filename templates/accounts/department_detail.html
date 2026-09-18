@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ department.name }} — WebEmail</title>
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+
+    <h2>WebEmail</h2>
+
+    <a href="{% url 'organization_detail' department.organization.id %}">
+        ← {{ department.organization.name }}
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <div class="welcome">
+
+        <h1>{{ department.name }}</h1>
+
+        <p>
+            Tashkilot:
+            <strong>{{ department.organization.name }}</strong>
+        </p>
+
+    </div>
+
+
+    <div class="welcome">
+
+        <h2>Xodimlar</h2>
+
+        <a href="{% url 'user_create' department.id %}">
+            + Xodim yaratish
+        </a>
+
+    </div>
+
+
+    <div class="cards">
+
+        {% for user in users %}
+
+            <div class="card">
+
+                <h3>
+                    {{ user.first_name }}
+                    {{ user.last_name }}
+                </h3>
+
+                <p style="font-size: 18px;">
+                    Login: {{ user.username }}
+                </p>
+
+                <p style="font-size: 18px;">
+                    Lavozim: {{ user.position|default:"—" }}
+                </p>
+
+            </div>
+
+        {% empty %}
+
+            <div class="card empty-state">
+                <h3>Hozircha xodimlar yo'q</h3>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+</html>
