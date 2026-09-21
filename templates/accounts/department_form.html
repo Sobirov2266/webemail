@@ -1,76 +1,26 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Bo‘lim yaratish — WebEmail{% endblock %}
 
-    <title>Bo'lim yaratish — WebEmail</title>
+{% block content %}
+<div class="panel panel-pad" style="max-width: 560px;">
+    <p class="page-kicker">{{ organization.name }}</p>
+    <h1 class="page-title" style="margin-bottom: 24px;">Bo‘lim yaratish</h1>
 
-    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
-</head>
-
-<body>
-
-<header class="header">
-
-    <h2>WebEmail</h2>
-
-    <a href="{% url 'organization_detail' organization.id %}">
-        ← Orqaga
-    </a>
-
-</header>
-
-<main class="container">
-
-    <div class="form-container">
-
-        <h1>Bo'lim yaratish</h1>
-
-        <p>
-            Tashkilot:
-            <strong>{{ organization.name }}</strong>
-        </p>
-
-        <form method="post">
-
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label>Bo'lim nomi</label>
-                <input
-                    type="text"
-                    name="name"
-                    required
-                    placeholder="Bo'lim nomini kiriting"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Tavsif</label>
-                <textarea
-                    name="description"
-                    placeholder="Bo'lim haqida qisqacha ma'lumot"
-                ></textarea>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    Saqlash
-                </button>
-
-                <a href="{% url 'organization_detail' organization.id %}" class="btn btn-secondary">
-                    Bekor qilish
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-</main>
-
-</body>
-</html>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label>Bo‘lim nomi</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="field">
+            <label>Tavsif</label>
+            <textarea name="description" style="min-height: 100px;"></textarea>
+        </div>
+        <div class="actions">
+            <a href="{% url 'organization_detail' organization.id %}" class="btn btn-secondary">Bekor qilish</a>
+            <button type="submit" class="btn">Saqlash</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

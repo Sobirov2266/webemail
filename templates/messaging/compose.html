@@ -1,9 +1,50 @@
 {% extends "base_user.html" %}
+
 {% block title %}WebEmail — Yangi xat{% endblock %}
-{% block page_title %}📝 Yangi xat{% endblock %}
-{% block extra_css %}
-    .form-card { max-width: 800px; } .form-group { margin-bottom: 20px; } label { display: block; margin-bottom: 8px; font-weight: bold; color: #374151; } select, input, textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font: inherit; outline: none; } select:focus, input:focus, textarea:focus { border-color: #2563eb; } textarea { min-height: 250px; resize: vertical; } .buttons { display: flex; justify-content: flex-end; margin-top: 25px; } .error { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 20px; }
-{% endblock %}
+{% block page_kicker %}Pochta{% endblock %}
+{% block page_title %}Yangi xat{% endblock %}
+
 {% block content %}
-    <div class="card-panel form-card">{% if error %}<div class="error">{{ error }}</div>{% endif %}<form method="post">{% csrf_token %}<div class="form-group"><label for="recipient">Kimga:</label><select name="recipient" id="recipient" required><option value="">-- Qabul qiluvchini tanlang --</option>{% for user in users %}<option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>{% endfor %}</select></div><div class="form-group"><label for="subject">Mavzu:</label><input type="text" name="subject" id="subject" placeholder="Xat mavzusini kiriting" maxlength="255"></div><div class="form-group"><label for="body">Xabar:</label><textarea name="body" id="body" placeholder="Xabaringizni yozing..."></textarea></div><div class="buttons"><button type="submit" class="primary-button">📤 Yuborish</button></div></form></div>
+<div class="panel panel-pad" style="max-width: 760px;">
+    {% if error %}
+        <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="field">
+            <label for="recipient">Kimga</label>
+            <select name="recipient" id="recipient">
+                <option value="">Qabul qiluvchini tanlang</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="subject">Mavzu</label>
+            <input type="text" name="subject" id="subject" maxlength="255" placeholder="Xat mavzusi">
+        </div>
+
+        <div class="field">
+            <label for="body">Xabar</label>
+            <textarea name="body" id="body" placeholder="Xabar matni"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="attachment">Fayl</label>
+            <p class="hint">PDF, Word, Excel, PowerPoint, TXT yoki rasm. Maksimal 10 MB.</p>
+            <input type="file" name="attachment" id="attachment">
+        </div>
+
+        <div class="actions">
+            <button type="submit" name="action" value="save_draft" class="btn btn-secondary">Qoralama</button>
+            <button type="submit" name="action" value="send" class="btn">Yuborish</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

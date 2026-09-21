@@ -194,3 +194,39 @@ class MessageState(models.Model):
 
 
 
+class Attachment(models.Model):
+
+    message = models.ForeignKey(
+        Message,
+        on_delete=models.CASCADE,
+        related_name="attachments",
+        verbose_name="Xabar",
+    )
+
+    file = models.FileField(
+        upload_to="message_attachments/",
+        verbose_name="Fayl",
+    )
+
+    original_name = models.CharField(
+        max_length=255,
+        verbose_name="Fayl nomi",
+    )
+
+    file_size = models.PositiveBigIntegerField(
+        default=0,
+        verbose_name="Fayl hajmi",
+    )
+
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Yuklangan vaqt",
+    )
+
+    class Meta:
+        verbose_name = "Biriktirilgan fayl"
+        verbose_name_plural = "Biriktirilgan fayllar"
+        ordering = ["uploaded_at"]
+
+    def __str__(self):
+        return self.original_name

@@ -1,65 +1,30 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}WebEmail — Tashkilotlar{% endblock %}
 
-    <title>WebEmail — Tashkilotlar</title>
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="page-kicker">Tuzilma</p>
+        <h1 class="page-title">Tashkilotlar</h1>
+        <p>Ro‘yxatdan tashkilotni ochib, bo‘lim va xodim qo‘shing.</p>
+    </div>
+    <a href="{% url 'organization_create' %}" class="btn">Tashkilot yaratish</a>
+</div>
 
-    <link rel="stylesheet"
-          href="{% static 'accounts/admin_dashboard.css' %}">
-</head>
-
-<body>
-
-<header class="header">
-
-    <h2>WebEmail</h2>
-
-    <a href="{% url 'admin_dashboard' %}">
-        Dashboard
+{% if organizations %}
+<div class="entity-grid">
+    {% for organization in organizations %}
+    <a href="{% url 'organization_detail' organization.id %}" class="entity-card">
+        <h3>{{ organization.name }}</h3>
+        <p>INN {{ organization.inn }}</p>
     </a>
-
-</header>
-
-<main class="container">
-
-    <div class="welcome">
-        <h1>Tashkilotlar</h1>
-
-        <a href="{% url 'organization_create' %}">
-            + Tashkilot yaratish
-        </a>
-    </div>
-
-    <div class="cards">
-
-        {% for organization in organizations %}
-
-            <a
-                href="{% url 'organization_detail' organization.id %}"
-                class="card card-link"
-            >
-                <h3>{{ organization.name }}</h3>
-
-                <p style="font-size: 18px;">
-                    INN: {{ organization.inn }}
-                </p>
-            </a>
-
-        {% empty %}
-
-            <div class="card empty-state">
-                <h3>Tashkilotlar mavjud emas</h3>
-            </div>
-
-        {% endfor %}
-
-    </div>
-
-</main>
-
-</body>
-</html>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel empty">
+    <h3>Tashkilot yo‘q</h3>
+    <p>Birinchi tashkilotni yarating.</p>
+</div>
+{% endif %}
+{% endblock %}

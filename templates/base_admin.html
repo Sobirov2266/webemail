@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WebEmail Admin{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'webemail/app.css' %}">
+</head>
+<body class="admin-shell">
+<header class="topnav">
+    <a href="{% url 'admin_dashboard' %}" class="brand">
+        WebEmail <small>Admin</small>
+    </a>
+    <div class="admin-nav-links">
+        <a href="{% url 'admin_dashboard' %}">Boshqaruv</a>
+        <a href="{% url 'organization_list' %}">Tashkilotlar</a>
+        <span>{{ request.user.first_name }} {{ request.user.last_name }}</span>
+        <a href="{% url 'admin_logout' %}">Chiqish</a>
+    </div>
+</header>
+<main class="admin-body">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

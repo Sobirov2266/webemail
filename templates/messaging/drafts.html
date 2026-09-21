@@ -1,0 +1,28 @@
+{% extends "base_user.html" %}
+
+{% block title %}WebEmail — Qoralamalar{% endblock %}
+{% block page_kicker %}Pochta{% endblock %}
+{% block page_title %}Qoralamalar{% endblock %}
+
+{% block content %}
+{% if messages %}
+<div class="panel mail-list">
+    {% for message in messages %}
+    <div class="mail-row">
+        <div class="sender">Qoralama</div>
+        <div class="subject">
+            <b>{% if message.subject %}{{ message.subject }}{% else %}(Mavzusiz){% endif %}</b>
+            — {% if message.body %}{{ message.body|truncatechars:80 }}{% else %}Matn yozilmagan{% endif %}
+            {% if message.attachments.all %} · fayl biriktirilgan{% endif %}
+        </div>
+        <div class="date">{{ message.updated_at|date:"d.m.Y H:i" }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel empty">
+    <h3>Qoralamalar yo‘q</h3>
+    <p>Saqlangan tugallanmagan xatlar shu yerda turadi.</p>
+</div>
+{% endif %}
+{% endblock %}

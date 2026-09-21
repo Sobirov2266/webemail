@@ -1,14 +1,36 @@
 {% extends "base_user.html" %}
-{% block title %}WebEmail — Dashboard{% endblock %}
-{% block extra_css %}
-    .welcome { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 35px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.20); }
-    .welcome h2 { margin: 0 0 10px; font-size: 30px; } .welcome p { margin: 5px 0; font-size: 16px; opacity: 0.95; }
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; } .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); } .card-label { color: #777; font-size: 14px; margin-bottom: 8px; } .card-value { color: #174f7a; font-size: 19px; font-weight: 700; }
-    .security { margin-top: 25px; background: #eef8f2; border: 1px solid #d7eddf; color: #23613b; padding: 20px 25px; border-radius: 15px; } .security-title { font-weight: 700; margin-bottom: 6px; }
-    @media (max-width: 900px) { .cards { grid-template-columns: 1fr 1fr; } } @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
-{% endblock %}
+
+{% block title %}WebEmail — Bosh sahifa{% endblock %}
+{% block page_kicker %}Hisob{% endblock %}
+{% block page_title %}Xush kelibsiz, {{ user_obj.first_name }}{% endblock %}
+
 {% block content %}
-    <section class="welcome"><h2>Xush kelibsiz, {{ user_obj.first_name }} {{ user_obj.last_name }}! 👋</h2><p>WebEmail elektron xabar almashish tizimiga muvaffaqiyatli kirdingiz.</p></section>
-    <section class="cards"><div class="card"><div class="card-label">Tashkilot</div><div class="card-value">{% if user_obj.department %}{{ user_obj.department.organization.name }}{% else %}—{% endif %}</div></div><div class="card"><div class="card-label">Bo‘lim</div><div class="card-value">{% if user_obj.department %}{{ user_obj.department.name }}{% else %}—{% endif %}</div></div><div class="card"><div class="card-label">Lavozim</div><div class="card-value">{{ user_obj.position|default:"—" }}</div></div></section>
-    <div class="security"><div class="security-title">🔐 Xavfsiz autentifikatsiya</div><div>Siz tizimga demo ERI kalitingiz orqali muvaffaqiyatli autentifikatsiyadan o‘tdingiz.</div></div>
+<p class="intro">Xatlar holatini shu yerdan kuzating. Yangi xat yozish yoki kiruvchi qutini ochish mumkin.</p>
+
+<div class="stats-grid">
+    <a href="{% url 'inbox' %}" class="stat-card">
+        <div class="label">Kiruvchi</div>
+        <div class="value">{{ inbox_count }}</div>
+        <div class="hint">Qabul qilingan xatlar</div>
+    </a>
+    <a href="{% url 'sent_messages' %}" class="stat-card">
+        <div class="label">Yuborilgan</div>
+        <div class="value">{{ sent_count }}</div>
+        <div class="hint">Chiquvchi xatlar</div>
+    </a>
+    <a href="{% url 'drafts' %}" class="stat-card">
+        <div class="label">Qoralamalar</div>
+        <div class="value">{{ draft_count }}</div>
+        <div class="hint">Tugallanmagan xatlar</div>
+    </a>
+    <div class="stat-card">
+        <div class="label">Belgilangan</div>
+        <div class="value">{{ saved_count }}</div>
+        <div class="hint">Tez orada ochiladi</div>
+    </div>
+</div>
+
+<div class="toolbar" style="margin-top: 24px;">
+    <a href="{% url 'compose' %}" class="btn">Yangi xat</a>
+</div>
 {% endblock %}

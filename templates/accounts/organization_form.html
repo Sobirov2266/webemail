@@ -1,90 +1,34 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Tashkilot yaratish — WebEmail{% endblock %}
 
-    <title>Tashkilot yaratish — WebEmail</title>
+{% block content %}
+<div class="panel panel-pad" style="max-width: 560px;">
+    <p class="page-kicker">Tuzilma</p>
+    <h1 class="page-title" style="margin-bottom: 24px;">Tashkilot yaratish</h1>
 
-    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
-</head>
+    {% if error %}
+        <div class="alert">{{ error }}</div>
+    {% endif %}
 
-<body>
-
-<header class="header">
-
-    <h2>WebEmail</h2>
-
-    <a href="{% url 'organization_list' %}">
-        ← Orqaga
-    </a>
-
-</header>
-
-<main class="container">
-
-    <div class="form-container">
-
-        <h1>Tashkilot yaratish</h1>
-
-        {% if error %}
-            <div class="error">
-                {{ error }}
-            </div>
-        {% endif %}
-
-        <form method="post">
-
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label>Tashkilot nomi</label>
-                <input
-                    type="text"
-                    name="name"
-                    required
-                    placeholder="Tashkilot nomini kiriting"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>INN</label>
-                <input
-                    type="text"
-                    name="inn"
-                    required
-                    placeholder="INN raqamini kiriting (9 xona)"
-                    maxlength="9"
-                    pattern="[0-9]{9}"
-                    title="INN 9 xonali raqamdan iborat bo'lishi kerak"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Tavsif</label>
-                <textarea
-                    name="description"
-                    placeholder="Tashkilot haqida qisqacha ma'lumot"
-                ></textarea>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    Tashkilot yaratish
-                </button>
-
-                <a href="{% url 'organization_list' %}" class="btn btn-secondary">
-                    Bekor qilish
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-</main>
-
-</body>
-</html>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label>Tashkilot nomi</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="field">
+            <label>INN</label>
+            <input type="text" name="inn" required maxlength="9" pattern="[0-9]{9}" title="INN 9 xonali raqam">
+        </div>
+        <div class="field">
+            <label>Tavsif</label>
+            <textarea name="description" style="min-height: 100px;"></textarea>
+        </div>
+        <div class="actions">
+            <a href="{% url 'organization_list' %}" class="btn btn-secondary">Bekor qilish</a>
+            <button type="submit" class="btn">Saqlash</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

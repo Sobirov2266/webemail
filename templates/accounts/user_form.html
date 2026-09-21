@@ -1,111 +1,38 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Xodim yaratish — WebEmail{% endblock %}
 
-    <title>Xodim yaratish — WebEmail</title>
+{% block content %}
+<div class="panel panel-pad" style="max-width: 560px;">
+    <p class="page-kicker">{{ department.organization.name }} · {{ department.name }}</p>
+    <h1 class="page-title" style="margin-bottom: 24px;">Xodim yaratish</h1>
 
-    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
-</head>
-
-<body>
-
-<header class="header">
-
-    <h2>WebEmail</h2>
-
-    <a href="{% url 'department_detail' department.id %}">
-        ← Orqaga
-    </a>
-
-</header>
-
-<main class="container">
-
-    <div class="form-container">
-
-        <h1>Xodim yaratish</h1>
-
-        <p>
-            Tashkilot:
-            <strong>{{ department.organization.name }}</strong>
-        </p>
-
-        <p>
-            Bo'lim:
-            <strong>{{ department.name }}</strong>
-        </p>
-
-        <form method="post">
-
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label>Ism</label>
-                <input
-                    type="text"
-                    name="first_name"
-                    required
-                    placeholder="Ismni kiriting"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Familiya</label>
-                <input
-                    type="text"
-                    name="last_name"
-                    required
-                    placeholder="Familiyani kiriting"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Login</label>
-                <input
-                    type="text"
-                    name="username"
-                    required
-                    placeholder="Loginni kiriting"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="email@example.com"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Lavozim</label>
-                <input
-                    type="text"
-                    name="position"
-                    placeholder="Lavozimni kiriting"
-                >
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    Xodimni yaratish
-                </button>
-
-                <a href="{% url 'department_detail' department.id %}" class="btn btn-secondary">
-                    Bekor qilish
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-</main>
-
-</body>
-</html>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label>Ism</label>
+            <input type="text" name="first_name" required>
+        </div>
+        <div class="field">
+            <label>Familiya</label>
+            <input type="text" name="last_name" required>
+        </div>
+        <div class="field">
+            <label>Login</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <input type="email" name="email">
+        </div>
+        <div class="field">
+            <label>Lavozim</label>
+            <input type="text" name="position">
+        </div>
+        <div class="actions">
+            <a href="{% url 'department_detail' department.id %}" class="btn btn-secondary">Bekor qilish</a>
+            <button type="submit" class="btn">Saqlash</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,10 +1,35 @@
 {% extends "base_user.html" %}
-{% block title %}WebEmail — Kiruvchi xatlar{% endblock %}
-{% block page_title %}📥 Kiruvchi xatlar{% endblock %}
-{% block extra_css %}
-    .page-actions { margin: -10px 0 20px; text-align: right; } .mail-list { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); } .message-row { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 18px 22px; text-decoration: none; color: #374151; border-bottom: 1px solid #e5e7eb; transition: background 0.2s; } .message-row:last-child { border-bottom: 0; } .message-row:hover { background: #f9fafb; } .message-left { display: flex; align-items: center; gap: 12px; min-width: 0; } .sender { font-size: 15px; font-weight: 700; margin-bottom: 5px; } .subject { color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .date { color: #9ca3af; font-size: 13px; flex-shrink: 0; } .unread { background: #f8fafc; } .unread .sender, .unread .subject { font-weight: bold; color: #374151; } .unread-dot { width: 9px; height: 9px; background: #2563eb; border-radius: 50%; display: inline-block; flex-shrink: 0; } .empty { background: white; padding: 50px; border-radius: 15px; text-align: center; color: #777; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); } @media (max-width: 700px) { .message-row { padding: 15px; } .date { display: none; } }
-{% endblock %}
+
+{% block title %}WebEmail — Kiruvchi{% endblock %}
+{% block page_kicker %}Pochta{% endblock %}
+{% block page_title %}Kiruvchi xatlar{% endblock %}
+
 {% block content %}
-    <div class="page-actions"><a href="{% url 'compose' %}" class="primary-button">✏️ Yangi xat</a></div>
-    {% if recipients %}<div class="mail-list">{% for recipient in recipients %}{% with state=recipient.message.current_user_states.0 %}<a href="{% url 'message_detail' recipient.message.id %}" class="message-row {% if not state.is_read %}unread{% endif %}"><div class="message-left">{% if not state.is_read %}<span class="unread-dot"></span>{% endif %}<div><div class="sender">{{ recipient.message.sender.first_name }} {{ recipient.message.sender.last_name }}</div><div class="subject">{% if recipient.message.subject %}{{ recipient.message.subject }}{% else %}(Mavzusiz){% endif %}</div></div></div><div class="date">{{ recipient.message.sent_at|date:"d.m.Y H:i" }}</div></a>{% endwith %}{% endfor %}</div>{% else %}<div class="empty">📭 Hozircha kiruvchi xatlar mavjud emas.</div>{% endif %}
+<div class="toolbar">
+    <a href="{% url 'compose' %}" class="btn">Yangi xat</a>
+</div>
+
+{% if recipients %}
+<div class="panel mail-list">
+    {% for recipient in recipients %}
+        {% with state=recipient.message.current_user_states.0 %}
+        <a href="{% url 'message_detail' recipient.message.id %}" class="mail-row {% if not state.is_read %}unread{% endif %}">
+            <div class="sender">
+                {% if not state.is_read %}<span class="dot"></span>{% endif %}
+                {{ recipient.message.sender.first_name }} {{ recipient.message.sender.last_name }}
+            </div>
+            <div class="subject">
+                {% if recipient.message.subject %}{{ recipient.message.subject }}{% else %}(Mavzusiz){% endif %}
+            </div>
+            <div class="date">{{ recipient.message.sent_at|date:"d.m.Y H:i" }}</div>
+        </a>
+        {% endwith %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel empty">
+    <h3>Kiruvchi xatlar yo‘q</h3>
+    <p>Sizga yuborilgan xatlar shu yerda chiqadi.</p>
+</div>
+{% endif %}
 {% endblock %}

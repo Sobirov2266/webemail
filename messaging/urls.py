@@ -4,6 +4,8 @@ from .views import (
     compose,
     sent_messages,
     message_detail,
+    drafts,
+    download_attachment,
 )
 
 urlpatterns = [
@@ -15,5 +17,15 @@ urlpatterns = [
         "message/<int:message_id>/",
         message_detail,
         name="message_detail",
+    ),
+    path(
+        "drafts/",
+        drafts,
+        name="drafts",
+    ),
+    path(
+        "attachments/<int:attachment_id>/download/",
+        download_attachment,
+        name="download_attachment",
     ),
 ]

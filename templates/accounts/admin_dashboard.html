@@ -1,74 +1,36 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}WebEmail — Boshqaruv{% endblock %}
 
-    <title>WebEmail — Admin Dashboard</title>
-
-    <link rel="stylesheet" href="{% static 'accounts/admin_dashboard.css' %}">
-
-</head>
-
-<body>
-
-<header class="header">
-
-    <h2>WebEmail</h2>
-
+{% block content %}
+<div class="page-head">
     <div>
-        <span>
-            {{ request.user.first_name }} {{ request.user.last_name }}
-        </span>
-
-        &nbsp;&nbsp;
-
-        <a href="{% url 'admin_logout' %}">
-            Chiqish
-        </a>
+        <p class="page-kicker">Administrator</p>
+        <h1 class="page-title">Boshqaruv paneli</h1>
+        <p>Tashkilotlar, bo‘limlar va xodimlarni shu yerdan boshqarasiz.</p>
     </div>
-
-</header>
-
-
-<main class="container">
-
-    <div class="welcome">
-        <h1>Administrator Dashboard</h1>
-
-        <p>
-            WebEmail tizimini boshqarish paneli
-        </p>
-    </div>
-
-
-    <div class="cards">
-
-    <a href="{% url 'organization_list' %}" class="card card-link">
-        <h3>Tashkilotlar</h3>
-        <p>{{ organization_count }}</p>
-    </a>
-
-    <div class="card">
-        <h3>Bo'limlar</h3>
-        <p>{{ department_count }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Xodimlar</h3>
-        <p>{{ user_count }}</p>
-    </div>
-
-    <div class="card">
-        <h3>ERI kalitlari</h3>
-        <p>{{ digital_key_count }}</p>
-    </div>
-
 </div>
 
-</main>
-
-</body>
-</html>
+<div class="stats-grid">
+    <a href="{% url 'organization_list' %}" class="stat-card">
+        <div class="label">Tashkilotlar</div>
+        <div class="value">{{ organization_count }}</div>
+        <div class="hint">Ro‘yxatni ochish</div>
+    </a>
+    <div class="stat-card">
+        <div class="label">Bo‘limlar</div>
+        <div class="value">{{ department_count }}</div>
+        <div class="hint">Barcha bo‘limlar</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Xodimlar</div>
+        <div class="value">{{ user_count }}</div>
+        <div class="hint">Superuserlar hisobga olinmaydi</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Faol kalitlar</div>
+        <div class="value">{{ digital_key_count }}</div>
+        <div class="hint">ERI kalitlari</div>
+    </div>
+</div>
+{% endblock %}

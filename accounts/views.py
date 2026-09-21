@@ -638,14 +638,40 @@ def verify_login_signature(request):
 
 @login_required(login_url="user_login")
 def user_dashboard(request):
+    from messaging.models import Message, MessageRecipient, MessageState
 
     user = request.user
+
+    inbox_count = MessageRecipient.objects.filter(
+        recipient=user,
+        message__status=Message.Status.SENT,
+    ).count()
+
+    sent_count = Message.objects.filter(
+        sender=user,
+        status=Message.Status.SENT,
+    ).count()
+
+    draft_count = Message.objects.filter(
+        sender=user,
+        status=Message.Status.DRAFT,
+    ).count()
+
+    saved_count = MessageState.objects.filter(
+        user=user,
+        is_starred=True,
+        is_deleted=False,
+    ).count()
 
     return render(
         request,
         "accounts/user_dashboard.html",
         {
             "user_obj": user,
+            "inbox_count": inbox_count,
+            "sent_count": sent_count,
+            "draft_count": draft_count,
+            "saved_count": saved_count,
         }
     )
 

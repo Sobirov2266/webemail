@@ -1,244 +1,50 @@
-{% load static %}
+{% extends "base_admin.html" %}
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Xodim — WebEmail{% endblock %}
 
-    <title>WebEmail — Xodim</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        }
-
-        h1 {
-            color: #174f7a;
-            margin-bottom: 30px;
-        }
-
-        .info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 35px;
-        }
-
-        .item {
-            padding: 18px;
-            background: #f7f8fc;
-            border-radius: 12px;
-        }
-
-        .label {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 6px;
-        }
-
-        .value {
-            font-size: 17px;
-            font-weight: bold;
-            color: #222;
-        }
-
-        .key-section {
-            border-top: 1px solid #ddd;
-            padding-top: 30px;
-        }
-
-        .key-box {
-            background: #f7f8fc;
-            border-radius: 14px;
-            padding: 25px;
-        }
-
-        .key-status {
-            margin-bottom: 20px;
-        }
-
-        .active {
-            color: #16803c;
-            font-weight: bold;
-        }
-
-        .inactive {
-            color: #777;
-        }
-
-        button {
-            border: none;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .fingerprint {
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 13px;
-            color: #555;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h1>Xodim profili</h1>
-
-    <div class="info">
-
-        <div class="item">
-            <div class="label">Ism</div>
-            <div class="value">
-                {{ user_obj.first_name }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Familiya</div>
-            <div class="value">
-                {{ user_obj.last_name }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Login</div>
-            <div class="value">
-                {{ user_obj.username }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Email</div>
-            <div class="value">
-                {{ user_obj.email|default:"—" }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Tashkilot</div>
-            <div class="value">
-                {{ user_obj.department.organization.name }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Bo‘lim</div>
-            <div class="value">
-                {{ user_obj.department.name }}
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="label">Lavozim</div>
-            <div class="value">
-                {{ user_obj.position|default:"—" }}
-            </div>
-        </div>
-
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="page-kicker">Xodim</p>
+        <h1 class="page-title">{{ user_obj.first_name }} {{ user_obj.last_name }}</h1>
+        <p>{{ user_obj.username }}</p>
     </div>
-
-
-    <div class="key-section">
-
-        <h2>ERI kaliti</h2>
-
-        <div class="key-box">
-
-            {% if digital_key %}
-
-                <div class="key-status">
-                    Holati:
-                    <span class="active">
-                        Faol
-                    </span>
-                </div>
-
-                <p>
-                    <strong>Algoritm:</strong>
-                    {{ digital_key.algorithm }}
-                </p>
-
-                <p>
-                    <strong>Key ID:</strong>
-                    {{ digital_key.key_id }}
-                </p>
-
-                <p>
-                    <strong>Fingerprint:</strong>
-                </p>
-
-                <div class="fingerprint">
-                    {{ digital_key.fingerprint }}
-                </div>
-
-                <br>
-
-                <p>
-                    🔐 Bu xodim uchun faol ERI kaliti mavjud.
-                </p>
-
-            {% else %}
-
-                <div class="key-status">
-                    Holati:
-                    <span class="inactive">
-                        Kalit yaratilmagan
-                    </span>
-                </div>
-
-                <p>
-                    Ushbu xodim uchun demo ERI kaliti yaratish mumkin.
-                </p>
-
-                <form method="post"
-                      action="{% url 'generate_digital_key' user_obj.id %}">
-
-                    {% csrf_token %}
-
-                    <button type="submit">
-                        🔐 ERI kalitini yaratish va yuklab olish
-                    </button>
-
-                </form>
-
-            {% endif %}
-
-        </div>
-
-    </div>
-
 </div>
 
-</body>
-</html>
+<div class="meta-grid">
+    <div class="meta-item">
+        <div class="label">Email</div>
+        <div class="value">{{ user_obj.email|default:"—" }}</div>
+    </div>
+    <div class="meta-item">
+        <div class="label">Tashkilot</div>
+        <div class="value">{{ user_obj.department.organization.name }}</div>
+    </div>
+    <div class="meta-item">
+        <div class="label">Bo‘lim</div>
+        <div class="value">{{ user_obj.department.name }}</div>
+    </div>
+    <div class="meta-item">
+        <div class="label">Lavozim</div>
+        <div class="value">{{ user_obj.position|default:"—" }}</div>
+    </div>
+</div>
+
+<div class="panel panel-pad">
+    <p class="page-kicker">ERI kaliti</p>
+    {% if digital_key %}
+        <p><span class="badge">Faol</span></p>
+        <p><strong>Algoritm:</strong> {{ digital_key.algorithm }}</p>
+        <p><strong>Key ID:</strong> {{ digital_key.key_id }}</p>
+        <p><strong>Fingerprint</strong></p>
+        <div class="fingerprint">{{ digital_key.fingerprint }}</div>
+    {% else %}
+        <p><span class="badge badge-muted">Kalit yo‘q</span></p>
+        <p class="intro">Xodim uchun demo kalit yaratib, .key faylni yuklab olish mumkin.</p>
+        <form method="post" action="{% url 'generate_digital_key' user_obj.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn">Kalit yaratish va yuklab olish</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
