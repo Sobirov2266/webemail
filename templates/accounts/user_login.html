@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebEmail — Kirish</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        .key-area {
+            border: 2px dashed #d5d9e2;
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+            background: #fafbff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .key-area:hover {
+            border-color: #667eea;
+            background: #f5f6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .key-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .key-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .key-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .status-box {
+            margin: 25px auto 0;
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .status-box.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .status-box.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .login-button {
+            width: 100%;
+            margin: 30px auto 0;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: block;
+        }
+
+        .login-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .info {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 520px) {
+            .login-container {
+                padding: 35px 25px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .key-area {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        WebEmail
+    </div>
+
+    <div class="subtitle">
+        Elektron tizimga kirish
+    </div>
+
+
+    <label for="keyFile" class="key-area">
+
+        <div class="key-icon">
+            🔐
+        </div>
+
+        <div class="key-title">
+            ERI kalitingizni kiriting
+        </div>
+
+        <div class="key-description">
+            Tizimga kirish uchun sizga berilgan
+            <strong>.key</strong> faylni tanlang
+        </div>
+
+        <input
+            type="file"
+            id="keyFile"
+            accept=".key"
+        >
+
+    </label>
+
+    <div
+        class="status-box"
+        id="statusBox"
+    >
+        Kalit fayli tanlanmagan
+    </div>
+
+    <button
+        type="button"
+        class="login-button"
+        id="loginButton"
+        disabled
+    >
+        Kirish
+    </button>
+
+
+    <div class="info">
+        Tizimga kirish uchun shaxsiy ERI kalitingizdan
+        foydalaning.
+    </div>
+
+</div>
+
+
+<script>
+    const keyFile = document.getElementById("keyFile");
+    const statusBox = document.getElementById("statusBox");
+    const loginButton = document.getElementById("loginButton");
+
+    function pemToArrayBuffer(pem) {
+        const base64 = pem
+            .replace("-----BEGIN PRIVATE KEY-----", "")
+            .replace("-----END PRIVATE KEY-----", "")
+            .replace(/\s/g, "");
+
+        const binaryString = atob(base64);
+        const bytes = new Uint8Array(binaryString.length);
+
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        return bytes.buffer;
+    }
+
+    async function importPrivateKey(pem) {
+        const keyData = pemToArrayBuffer(pem);
+        const privateKey = await crypto.subtle.importKey(
+            "pkcs8",
+            keyData,
+            {
+                name: "Ed25519"
+            },
+            false,
+            ["sign"]
+        );
+        return privateKey;
+    }
+
+    keyFile.addEventListener("change", function () {
+        if (this.files.length === 0) {
+            statusBox.textContent = "Kalit fayli tanlanmagan";
+            statusBox.className = "status-box";
+            loginButton.disabled = true;
+            return;
+        }
+
+        const file = this.files[0];
+
+        if (!file.name.toLowerCase().endsWith(".key")) {
+            statusBox.textContent = "❌ Faqat .key fayl tanlang";
+            statusBox.className = "status-box error";
+            loginButton.disabled = true;
+            return;
+        }
+
+        statusBox.textContent = "🔐 " + file.name;
+        statusBox.className = "status-box success";
+        loginButton.disabled = false;
+    });
+
+    loginButton.addEventListener("click", async function () {
+        if (keyFile.files.length === 0) {
+            return;
+        }
+
+        try {
+            const file = keyFile.files[0];
+
+            // 1. .key faylni o'qiymiz
+            const fileContent = await file.text();
+
+            // 2. Key ID ni olamiz
+            const keyIdMatch = fileContent.match(/Key ID:\s*([a-f0-9-]+)/i);
+
+            if (!keyIdMatch) {
+                alert("❌ Key ID topilmadi.");
+                return;
+            }
+
+            const keyId = keyIdMatch[1];
+
+            // 3. Private Key ni olamiz
+            const privateKeyMatch = fileContent.match(
+                /-----BEGIN PRIVATE KEY-----[\s\S]+?-----END PRIVATE KEY-----/
+            );
+
+            if (!privateKeyMatch) {
+                alert("❌ Private key topilmadi.");
+                return;
+            }
+
+            const privateKeyPem = privateKeyMatch[0];
+
+            // 4. Private Key ni browserga import qilamiz
+            loginButton.disabled = true;
+            loginButton.textContent = "Kalit tayyorlanmoqda...";
+
+            const privateKey = await importPrivateKey(privateKeyPem);
+
+            console.log("✅ Private key browserga import qilindi.");
+
+            // 5. Serverdan Challenge olamiz
+            loginButton.textContent = "Challenge olinmoqda...";
+
+            const formData = new URLSearchParams();
+            formData.append("key_id", keyId);
+
+            const challengeResponse = await fetch(
+                "{% url 'create_login_challenge' %}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: formData
+                }
+            );
+
+            const challengeData = await challengeResponse.json();
+
+            if (!challengeData.success) {
+                alert("❌ " + challengeData.message);
+                loginButton.disabled = false;
+                loginButton.textContent = "Kirish";
+                return;
+            }
+
+            const challenge = challengeData.challenge;
+            console.log("✅ Challenge olindi:", challenge);
+
+            // 6. Challenge'ni imzolaymiz
+            loginButton.textContent = "Imzo yaratilmoqda...";
+
+            const encoder = new TextEncoder();
+            const challengeBytes = encoder.encode(challenge);
+
+            const signature = await crypto.subtle.sign(
+                {
+                    name: "Ed25519"
+                },
+                privateKey,
+                challengeBytes
+            );
+
+            const signatureBytes = new Uint8Array(signature);
+            let binaryString = "";
+
+            for (let i = 0; i < signatureBytes.length; i++) {
+                binaryString += String.fromCharCode(signatureBytes[i]);
+            }
+
+            const signatureBase64 = btoa(binaryString);
+
+            console.log("✅ Challenge imzolandi.");
+            console.log("Signature:", signatureBase64);
+            console.log("Signature uzunligi:", signature.byteLength, "bytes");
+
+            // 7. Natijani tekshiramiz
+            loginButton.textContent = "Imzo tekshirilmoqda...";
+
+            const verifyData = new URLSearchParams();
+            verifyData.append("key_id", keyId);
+            verifyData.append("challenge", challenge);
+            verifyData.append("signature", signatureBase64);
+
+            const verifyResponse = await fetch(
+                "{% url 'verify_login_signature' %}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: verifyData
+                }
+            );
+
+            const verifyResult = await verifyResponse.json();
+
+            if (!verifyResult.success) {
+
+                alert(
+                    "❌ " +
+                    verifyResult.message
+                );
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Kirish";
+
+                return;
+            }
+
+
+            // ERI muvaffaqiyatli tasdiqlandi
+            window.location.href =
+                "{% url 'user_dashboard' %}";
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Kirish";
+
+        } catch (error) {
+            console.error("Crypto error:", error);
+            alert(
+                "❌ Private key yoki kriptografiya bilan xatolik.\n\n" +
+                error.message
+            );
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Kirish";
+        }
+    });
+</script>
+
+</body>
+</html>

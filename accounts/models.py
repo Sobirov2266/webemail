@@ -8,6 +8,8 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.db.models import Q
 
+import secrets
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -206,3 +208,53 @@ class DigitalKey(models.Model):
 
     def __str__(self):
         return f"{self.user} — {self.algorithm}"
+
+
+def generate_challenge():
+    return secrets.token_urlsafe(32)
+
+
+class LoginChallenge(models.Model):
+
+    digital_key = models.ForeignKey(
+        DigitalKey,
+        on_delete=models.CASCADE,
+        related_name="login_challenges",
+        verbose_name="ERI kaliti"
+    )
+
+    challenge = models.CharField(
+        max_length=128,
+        unique=True,
+        default=generate_challenge,
+        verbose_name="Challenge"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Yaratilgan vaqt"
+    )
+
+    expires_at = models.DateTimeField(
+        verbose_name="Tugash vaqti"
+    )
+
+    used_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Ishlatilgan vaqt"
+    )
+
+    class Meta:
+        verbose_name = "Login Challenge"
+        verbose_name_plural = "Login Challenges"
+        ordering = ["-created_at"]
+
+    def is_valid(self):
+        return (
+            self.used_at is None
+            and timezone.now() < self.expires_at
+        )
+
+    def __str__(self):
+        return f"{self.digital_key.key_id} — {self.challenge[:16]}"

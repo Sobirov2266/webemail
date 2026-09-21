@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Yangi xat</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 250px;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #6b7280;
+        }
+
+        .send-button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .send-button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📝 Yangi xat</h1>
+    {% if error %}
+    <div style="
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    ">
+        {{ error }}
+    </div>
+{% endif %}
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="recipient">Kimga:</label>
+
+            <select name="recipient" id="recipient" required>
+
+                <option value="">-- Qabul qiluvchini tanlang --</option>
+
+                {% for user in users %}
+
+                    <option value="{{ user.id }}">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="subject">Mavzu:</label>
+
+            <input
+                type="text"
+                name="subject"
+                id="subject"
+                placeholder="Xat mavzusini kiriting"
+                maxlength="255"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="body">Xabar:</label>
+
+            <textarea
+                name="body"
+                id="body"
+                placeholder="Xabaringizni yozing..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a href="{% url 'user_dashboard' %}" class="back">
+                ← Dashboardga qaytish
+            </a>
+
+            <button type="submit" class="send-button">
+                📤 Yuborish
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

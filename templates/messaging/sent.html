@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Yuborilgan xatlar</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .compose-button {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .compose-button:hover {
+            background: #1d4ed8;
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-top: 0;
+        }
+
+        .message {
+            padding: 18px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .message:last-child {
+            border-bottom: none;
+        }
+
+        .recipient {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .subject {
+            margin-top: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .body {
+            margin-top: 8px;
+            color: #4b5563;
+        }
+
+        .date {
+            margin-top: 10px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .empty {
+            padding: 30px 0;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📤 Yuborilgan xatlar</h1>
+
+    <a href="{% url 'compose' %}" class="compose-button">
+        ✏️ Yangi xat
+    </a>
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="message">
+
+                <div class="recipient">
+
+                    Kimga:
+
+                    {% for recipient in message.recipients.all %}
+
+                        {{ recipient.recipient.first_name }}
+                        {{ recipient.recipient.last_name }}
+
+                        {% if not forloop.last %}, {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="subject">
+                    {% if message.subject %}
+                        {{ message.subject }}
+                    {% else %}
+                        (Mavzusiz)
+                    {% endif %}
+                </div>
+
+                <div class="body">
+                    {{ message.body }}
+                </div>
+
+                <div class="date">
+                    {{ message.sent_at|date:"d.m.Y H:i" }}
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            📭 Hali hech qanday xat yuborilmagan.
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'user_dashboard' %}" class="back">
+        ← Dashboardga qaytish
+    </a>
+
+</div>
+
+</body>
+</html>

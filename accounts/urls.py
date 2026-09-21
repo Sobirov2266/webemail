@@ -10,6 +10,14 @@ from .views import (
     department_create,
     department_detail,
     user_create,
+    user_detail,
+    generate_digital_key,
+    user_login,
+    check_digital_key,
+    create_login_challenge,
+    verify_login_signature,
+    user_dashboard,
+    user_logout,
 )
 
 
@@ -66,5 +74,53 @@ urlpatterns = [
         "admin/departments/<int:department_id>/users/create/",
         user_create,
         name="user_create"
+    ),
+
+    path(
+        "admin/users/<int:user_id>/",
+        user_detail,
+        name="user_detail"
+    ),
+
+    path(
+        "admin/users/<int:user_id>/generate-key/",
+        generate_digital_key,
+        name="generate_digital_key"
+    ),
+
+    path(
+        "login/",
+        user_login,
+        name="user_login"
+    ),
+
+    path(
+        "check-key/",
+        check_digital_key,
+        name="check_digital_key"
+    ),
+
+    path(
+        "login/challenge/",
+        create_login_challenge,
+        name="create_login_challenge"
+    ),
+
+    path(
+        "login/verify/",
+        verify_login_signature,
+        name="verify_login_signature"
+    ),
+
+    path(
+        "user/dashboard/",
+        user_dashboard,
+        name="user_dashboard"
+    ),
+
+    path(
+        "user/logout/",
+        user_logout,
+        name="user_logout"
     ),
 ]

@@ -57,8 +57,10 @@
             <div class="card">
 
                 <h3>
-                    {{ user.first_name }}
-                    {{ user.last_name }}
+                    <a href="{% url 'user_detail' user.id %}">
+                        {{ user.first_name }}
+                        {{ user.last_name }}
+                    </a>
                 </h3>
 
                 <p style="font-size: 18px;">

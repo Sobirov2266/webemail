@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WebEmail — Kiruvchi xatlar</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f7fb;
+
+            color: #222;
+        }
+
+
+        .container {
+            max-width: 1100px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .compose-button {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .compose-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .header h1 {
+            margin: 0;
+
+            color: #174f7a;
+
+            font-size: 28px;
+        }
+
+
+        .back {
+            text-decoration: none;
+
+            color: #667eea;
+
+            font-weight: 600;
+        }
+
+
+        .mail-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .mail {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 20px 25px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.05);
+        }
+
+
+        .sender {
+            font-weight: 700;
+
+            color: #174f7a;
+
+            margin-bottom: 7px;
+        }
+
+
+        .subject {
+            font-size: 17px;
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+        }
+
+
+        .date {
+            color: #888;
+
+            font-size: 13px;
+        }
+
+
+        .empty {
+            background: white;
+
+            padding: 50px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            color: #777;
+        }
+
+
+        .message-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px;
+
+            text-decoration: none;
+            color: #374151;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            transition: background 0.2s;
+        }
+
+        .message-row:hover {
+            background: #f9fafb;
+        }
+
+        .message-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sender {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .subject {
+            color: #6b7280;
+        }
+
+        .date {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .unread {
+            background: #f8fafc;
+        }
+
+        .unread .sender {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .unread .subject {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .unread-dot {
+            width: 9px;
+            height: 9px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            📥 Kiruvchi xatlar
+        </h1>
+
+        <a href="{% url 'compose' %}" class="compose-button">
+            ✏️ Yangi xat
+        </a>
+
+
+        <a
+            href="{% url 'user_dashboard' %}"
+            class="back"
+        >
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="mail-list">
+
+
+        {% for recipient in recipients %}
+
+            {% with state=recipient.message.current_user_states.0 %}
+
+                <a
+                    href="{% url 'message_detail' recipient.message.id %}"
+                    class="message-row {% if not state.is_read %}unread{% endif %}"
+                >
+
+                    <div class="message-left">
+
+                        {% if not state.is_read %}
+                            <span class="unread-dot"></span>
+                        {% endif %}
+
+                        <div>
+
+                            <div class="sender">
+                                {{ recipient.message.sender.first_name }}
+                                {{ recipient.message.sender.last_name }}
+                            </div>
+
+                            <div class="subject">
+
+                                {% if recipient.message.subject %}
+                                    {{ recipient.message.subject }}
+                                {% else %}
+                                    (Mavzusiz)
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="date">
+                        {{ recipient.message.sent_at|date:"d.m.Y H:i" }}
+                    </div>
+
+                </a>
+
+            {% endwith %}
+
+        {% empty %}
+
+            <div class="empty">
+                📭 Hozircha kiruvchi xatlar mavjud emas.
+            </div>
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
