@@ -1,28 +1,28 @@
 {% extends "base_user.html" %}
 
-{% block title %}WebEmail — Kiruvchi{% endblock %}
+{% block title %}WebEmail — Belgilangan{% endblock %}
 {% block page_kicker %}Pochta{% endblock %}
-{% block page_title %}Kiruvchi xatlar{% endblock %}
+{% block page_title %}Belgilangan xatlar{% endblock %}
 
 {% block content %}
 <div class="toolbar">
     <a href="{% url 'compose' %}" class="btn">Yangi xat</a>
 </div>
 
-{% if recipients %}
+{% if starred_states %}
 <div class="panel mail-list">
-    {% for recipient in recipients %}
-        {% with state=recipient.message.current_user_states.0 %}
-        <a href="{% url 'message_detail' recipient.message.id %}" class="mail-row {% if not state.is_read %}unread{% endif %}">
+    {% for state in starred_states %}
+        {% with recipient=state.message.user_recipients.0 %}
+        <a href="{% url 'message_detail' state.message.id %}" class="mail-row">
             <div class="sender">
                 {% if not state.is_read %}<span class="dot"></span>{% endif %}
                 <div class="sender-identity">
                     <span class="sender-name">
-                        {{ recipient.message.sender.first_name }} {{ recipient.message.sender.last_name }}
+                        {{ state.message.sender.first_name }} {{ state.message.sender.last_name }}
                     </span>
-                    {% if recipient.message.sender.department %}
+                    {% if state.message.sender.department %}
                         <span class="sender-details">
-                            {{ recipient.message.sender.department.organization.name }} · {{ recipient.message.sender.department.name }}
+                            {{ state.message.sender.department.organization.name }} · {{ state.message.sender.department.name }}
                         </span>
                     {% else %}
                         <span class="sender-details placeholder">Tashkilot va bo'lim biriktirilmagan</span>
@@ -30,13 +30,13 @@
                 </div>
             </div>
             <div class="subject">
-                {% if recipient.message.subject %}{{ recipient.message.subject }}{% else %}(Mavzusuz){% endif %}
+                {% if state.message.subject %}{{ state.message.subject }}{% else %}(Mavzusuz){% endif %}
             </div>
-            <div class="date">{{ recipient.message.sent_at|date:"d.m.Y H:i" }}</div>
+            <div class="date">{{ state.message.sent_at|date:"d.m.Y H:i" }}</div>
             <div class="star-action">
-                <form method="post" action="{% url 'toggle_starred' recipient.message.id %}" class="star-form">
+                <form method="post" action="{% url 'toggle_starred' state.message.id %}" class="star-form">
                     {% csrf_token %}
-                    <button type="submit" class="star-btn {% if state.is_starred %}starred{% endif %}" title="Belgilash">
+                    <button type="submit" class="star-btn starred" title="Belgilashni bekor qilish">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
@@ -49,8 +49,8 @@
 </div>
 {% else %}
 <div class="panel empty">
-    <h3>Kiruvchi xatlar yo'q</h3>
-    <p>Sizga yuborilgan xatlar shu yerda chiqadi.</p>
+    <h3>Belgilangan xatlar yo'q</h3>
+    <p>Xatlarni belgilash uchun inbox'dagi xat ustidagi ⭐ tugmasini bosing.</p>
 </div>
 {% endif %}
 {% endblock %}

@@ -6,6 +6,8 @@ from .views import (
     message_detail,
     drafts,
     download_attachment,
+    starred,
+    toggle_starred,
 )
 
 urlpatterns = [
@@ -27,5 +29,15 @@ urlpatterns = [
         "attachments/<int:attachment_id>/download/",
         download_attachment,
         name="download_attachment",
+    ),
+    path(
+        "starred/",
+        starred,
+        name="starred",
+    ),
+    path(
+        "message/<int:message_id>/toggle-starred/",
+        toggle_starred,
+        name="toggle_starred",
     ),
 ]

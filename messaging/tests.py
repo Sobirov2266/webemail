@@ -5,6 +5,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
+from organizations.models import Department, Organization
 
 from .models import Attachment, Message, MessageRecipient, MessageState
 
@@ -95,6 +96,25 @@ class MessagingFlowTests(TestCase):
         self.assertEqual(response.context["draft_count"], 1)
         self.assertEqual(response.context["saved_count"], 1)
 
+    def test_inbox_displays_sender_organization_and_department(self):
+        organization = Organization.objects.create(
+            name="Test tashkiloti",
+            inn="123456789",
+        )
+        department = Department.objects.create(
+            organization=organization,
+            name="IT bo‘limi",
+        )
+        self.other_user.department = department
+        self.other_user.save(update_fields=["department"])
+        self.create_sent_message(self.other_user, self.sender)
+        self.client.force_login(self.sender)
+
+        response = self.client.get(reverse("inbox"))
+
+        self.assertContains(response, "Test tashkiloti")
+        self.assertContains(response, "IT bo‘limi")
+
     def test_attachment_download_requires_the_message_recipient(self):
         message = self.create_sent_message(self.sender, self.recipient)
 
@@ -121,8 +141,10 @@ class MessagingFlowTests(TestCase):
                     reverse("download_attachment", args=[attachment.id])
                 )
 
-                allowed_response.close()
                 direct_response = self.client.get(attachment.file.url)
+
+                allowed_response.close()
+                direct_response.close()
 
         self.assertEqual(forbidden_response.status_code, 404)
         self.assertEqual(allowed_response.status_code, 200)

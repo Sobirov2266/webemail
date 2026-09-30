@@ -18,6 +18,7 @@ from .views import (
     verify_login_signature,
     user_dashboard,
     user_logout,
+    profile,
 )
 
 
@@ -122,5 +123,11 @@ urlpatterns = [
         "user/logout/",
         user_logout,
         name="user_logout"
+    ),
+
+    path(
+        "profile/",
+        profile,
+        name="profile"
     ),
 ]

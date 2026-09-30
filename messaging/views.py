@@ -27,6 +27,8 @@ def inbox(request):
         .select_related(
             "message",
             "message__sender",
+            "message__sender__department",
+            "message__sender__department__organization",
         )
         .prefetch_related(
             Prefetch(
@@ -394,3 +396,70 @@ def download_attachment(request, attachment_id):
         as_attachment=True,
         filename=attachment.original_name,
     )
+
+
+@login_required(login_url="user_login")
+def starred(request):
+    # Foydalanuvchining is_starred=True bo'lgan xatlarini olish
+    starred_states = (
+        MessageState.objects
+        .filter(
+            user=request.user,
+            is_starred=True,
+            is_deleted=False,
+        )
+        .select_related(
+            "message",
+            "message__sender",
+            "message__sender__department",
+            "message__sender__department__organization",
+        )
+        .prefetch_related(
+            Prefetch(
+                "message__recipients",
+                queryset=MessageRecipient.objects.filter(
+                    recipient=request.user
+                ),
+                to_attr="user_recipients",
+            )
+        )
+        .order_by("-created_at")
+    )
+
+    return render(
+        request,
+        "messaging/starred.html",
+        {
+            "starred_states": starred_states,
+        }
+    )
+
+
+@login_required(login_url="user_login")
+def toggle_starred(request, message_id):
+    # Xatni belgilash/bekor qilish
+    if request.method != "POST":
+        return redirect("inbox")
+
+    try:
+        recipient = MessageRecipient.objects.get(
+            message_id=message_id,
+            recipient=request.user,
+        )
+    except MessageRecipient.DoesNotExist:
+        return redirect("inbox")
+
+    message = recipient.message
+
+    # MessageState yaratish yoki olish
+    state, created = MessageState.objects.get_or_create(
+        message=message,
+        user=request.user,
+    )
+
+    # Toggle is_starred
+    state.is_starred = not state.is_starred
+    state.save(update_fields=["is_starred"])
+
+    # Redirect to back or inbox
+    return redirect(request.META.get("HTTP_REFERER", "inbox"))

@@ -133,6 +133,7 @@ class DigitalKey(models.Model):
 
     class Purpose(models.TextChoices):
         AUTHENTICATION = "AUTHENTICATION", "Tizimga kirish"
+        ENCRYPTION = "ENCRYPTION", "Xatlarni shifrlash"
 
     user = models.ForeignKey(
         "User",

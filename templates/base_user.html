@@ -35,11 +35,17 @@
                 Qoralamalar
             </a>
 
-            <div class="nav-label">Tez orada</div>
-            <a href="#" class="nav-link is-disabled">Belgilangan</a>
+            
+            <a href="{% url 'starred' %}" class="nav-link {% if request.resolver_match.url_name == 'starred' %}active{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Belgilangan
+            </a>
             <a href="#" class="nav-link is-disabled">Arxiv</a>
             <a href="#" class="nav-link is-disabled">Chiqindi</a>
-            <a href="#" class="nav-link is-disabled">Profil</a>
+            <a href="{% url 'profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profil
+            </a>
         </nav>
 
         <div class="sidebar-foot">

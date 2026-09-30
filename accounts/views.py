@@ -681,3 +681,22 @@ def user_dashboard(request):
 def user_logout(request):
     logout(request)
     return redirect("user_login")
+
+
+@login_required(login_url="user_login")
+def profile(request):
+    user = request.user
+
+    # Foydalanuvchi ERI kalit ma'lumotlarini olish
+    digital_key = user.digital_keys.filter(
+        is_active=True
+    ).first()
+
+    return render(
+        request,
+        "accounts/profile.html",
+        {
+            "user_obj": user,
+            "digital_key": digital_key,
+        }
+    )

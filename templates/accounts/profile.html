@@ -1,0 +1,93 @@
+{% extends "base_user.html" %}
+
+{% block title %}WebEmail — Profil{% endblock %}
+{% block page_kicker %}Sozlamalar{% endblock %}
+{% block page_title %}Profil{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-grid">
+        <!-- Shaxsiy ma'lumotlar -->
+        <div class="panel profile-section">
+            <h2 class="section-title">Shaxsiy ma'lumotlar</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Ism</label>
+                    <div class="info-value">{{ user_obj.first_name }}</div>
+                </div>
+                <div class="info-item">
+                    <label>Familiya</label>
+                    <div class="info-value">{{ user_obj.last_name }}</div>
+                </div>
+                <div class="info-item">
+                    <label>Login</label>
+                    <div class="info-value">{{ user_obj.username }}</div>
+                </div>
+                <div class="info-item">
+                    <label>Email</label>
+                    <div class="info-value">{{ user_obj.email|default:"—" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ish ma'lumotlari -->
+        <div class="panel profile-section">
+            <h2 class="section-title">Ish ma'lumotlari</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Tashkilot</label>
+                    <div class="info-value">
+                        {% if user_obj.department %}
+                            {{ user_obj.department.organization.name }}
+                        {% else %}
+                            <span class="placeholder">Biriktirilmagan</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <label>Bo'lim</label>
+                    <div class="info-value">
+                        {% if user_obj.department %}
+                            {{ user_obj.department.name }}
+                        {% else %}
+                            <span class="placeholder">Biriktirilmagan</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <label>Lavozim</label>
+                    <div class="info-value">{{ user_obj.position|default:"—"|upper }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Xavfsizlik sozlamalari -->
+        <div class="panel profile-section">
+            <h2 class="section-title">Xavfsizlik sozlamalari</h2>
+            <div class="security-info">
+                <div class="info-item">
+                    <label>ERI kalit holati</label>
+                    <div class="info-value">
+                        {% if digital_key %}
+                            <span class="status-active">Faol</span>
+                        {% else %}
+                            <span class="status-inactive">Faol emas</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if digital_key %}
+                <div class="info-item">
+                    <label>Kalit ID</label>
+                    <div class="info-value"> Shifrlangan</div>
+                </div>
+                <div class="info-item">
+                    <label>Algoritm</label>
+                    <div class="info-value">{{ digital_key.algorithm }}</div>
+                </div>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
