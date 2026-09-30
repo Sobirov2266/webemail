@@ -1,6 +1,11 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+
+try:
+    from dotenv import load_dotenv
+except ModuleNotFoundError:  # pragma: no cover - optional dependency in minimal envs
+    def load_dotenv(*args, **kwargs):
+        return False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
